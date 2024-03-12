@@ -42,3 +42,11 @@ recnik = {
 for kljuc in recnik.keys():
     print(kljuc)
     
+#8
+lista = ["jabuke", "banane", "kivi", "mandarine", "grozdje", "mango"]
+for voce in lista:
+    if "kivi" == voce:
+        continue
+    elif "grozdje" == voce:
+        break
+    print(voce)
