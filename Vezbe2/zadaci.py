@@ -116,3 +116,9 @@ konvertovanje = lambda a:int(a)
 print("Sortirana lista:",sorted(lista,key = konvertovanje))
 
 #5
+lista = [2, 15, -5, 28, 9, -30, 4, -1]
+print("Lista pre filtriranja")
+lista = list(filter(lambda x: (int(x) % 2 == 0 and int(x) > 0), lista))
+print("Lista posle filtriranja:",lista)
+
+
