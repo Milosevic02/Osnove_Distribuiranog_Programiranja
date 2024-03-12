@@ -56,3 +56,10 @@ i = 5
 while i<=10:
     print(i)
     i +=1
+    
+#10
+i=1
+while i<6 :
+    print(i)
+    i+=1
+else : print("Vrednost promenljive je",i, "više nije manja od 6")
