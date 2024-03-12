@@ -18,3 +18,8 @@ if "krompir" not in povrce:
 else:
     print("Krompir se nalazi u listi")
     
+#4
+brojevi = [1,2,4,5,6,7,3]
+for broj in brojevi:
+    print(broj)
+    
