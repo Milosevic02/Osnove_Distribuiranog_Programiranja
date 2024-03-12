@@ -111,3 +111,8 @@ print("9/3 = ",zadatak3(9,3))
 print("9/0 = ",zadatak3(9,0))
 
 #4
+lista = ["10", "2", "19", "0", "-1", "-20", "5"] 
+konvertovanje = lambda a:int(a)
+print("Sortirana lista:",sorted(lista,key = konvertovanje))
+
+#5
