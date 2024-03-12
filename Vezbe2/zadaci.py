@@ -80,6 +80,7 @@ print("Lista pre promene: ",lista)
 zadatak1(lista)
 print("Lista posle promene: ",lista)
 
+#2
 def zadatak2(*args):
     if len(args) == 0:
         raise Exception("Potrebno je proslediti barem jedan parametar!")
@@ -98,3 +99,15 @@ except Exception as e:
 
 print("Proizvod: ",zadatak2(3,5))
 print("Suma: ",zadatak2(4,3,7,8))
+
+#3
+def zadatak3(a,b):
+    try:
+        return a/b
+    except ZeroDivisionError as err:
+        print("Greska:", err)
+        
+print("9/3 = ",zadatak3(9,3))
+print("9/0 = ",zadatak3(9,0))
+
+#4
