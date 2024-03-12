@@ -50,3 +50,9 @@ for voce in lista:
     elif "grozdje" == voce:
         break
     print(voce)
+    
+#9
+i = 5
+while i<=10:
+    print(i)
+    i +=1
