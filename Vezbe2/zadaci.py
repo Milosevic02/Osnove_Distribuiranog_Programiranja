@@ -33,3 +33,12 @@ skup = {"jabuke", "banane", "kivi", "mandarine", "grozdje", "mango"}
 for x in skup:
     print(x)
 
+#7
+recnik = {
+ "marka": "Ford",
+"model": "Mustang",
+"godina": 1964
+} 
+for kljuc in recnik.keys():
+    print(kljuc)
+    
