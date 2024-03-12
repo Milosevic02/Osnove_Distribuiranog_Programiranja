@@ -28,3 +28,8 @@ torka = (True,False,False,True)
 for tor in torka:
     print(tor)
     
+#6
+skup = {"jabuke", "banane", "kivi", "mandarine", "grozdje", "mango"} 
+for x in skup:
+    print(x)
+
