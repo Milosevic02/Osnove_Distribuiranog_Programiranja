@@ -79,3 +79,22 @@ lista = [4,6,9,1,6,4]
 print("Lista pre promene: ",lista)
 zadatak1(lista)
 print("Lista posle promene: ",lista)
+
+def zadatak2(*args):
+    if len(args) == 0:
+        raise Exception("Potrebno je proslediti barem jedan parametar!")
+    if len(args) > 3:
+        return sum(args)
+    else:
+        rez = 1
+        for arg in args:
+            rez *= arg
+        return rez
+
+try:    
+    print("Izuzetak: ",zadatak2())
+except Exception as e:
+    print("Greska:",e)
+
+print("Proizvod: ",zadatak2(3,5))
+print("Suma: ",zadatak2(4,3,7,8))
