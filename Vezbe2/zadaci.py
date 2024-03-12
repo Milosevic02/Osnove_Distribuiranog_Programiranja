@@ -23,3 +23,8 @@ brojevi = [1,2,4,5,6,7,3]
 for broj in brojevi:
     print(broj)
     
+#5
+torka = (True,False,False,True)
+for tor in torka:
+    print(tor)
+    
