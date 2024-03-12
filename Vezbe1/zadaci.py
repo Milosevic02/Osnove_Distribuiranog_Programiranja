@@ -1,7 +1,7 @@
 print("***********PRVI DEO*****************")
 #1
 x = 5**2 + 3/4
-'''
+
 #2
 a = 17
 b = 3
@@ -110,7 +110,7 @@ del recnik["marka"]
 print(recnik)
 recnik.clear()
 print(recnik)
-'''
+
 #3
 print("Torka:")
 torka = ("jabuke", "banane", "kivi", "mandarine", "grozdje", "mango")
