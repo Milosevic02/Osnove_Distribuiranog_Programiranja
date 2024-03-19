@@ -1,4 +1,4 @@
-# KLASE (str. 37)
+# KLASE (str. 39)
 #1
 class Student:
     fakultet = "FTN"
@@ -101,3 +101,10 @@ ucenik1.upisi_ocenu("srpski", 5)
 print("Ocene: ", ucenik1.ocene)
 print("Zakljucna ocena iz srpskog: ", ucenik1.zakljuci_ocenu("srpski"))
 print("Prosek ucenika", ucenik1.prosek())
+
+# RAD SA DATOTEKAMA (str. 46)
+#1
+f = open("zadatak1.txt","w")
+f.write("PR41/2021 Dragan Milosevic")
+f.close()
+
