@@ -143,3 +143,16 @@ f = open("zadatak4.txt","wb")
 pickle.dump(studenti,f)
 f.close()
 
+#5
+import json
+
+class Ispit:
+   def __init__(self, ucionice, predmet, profesor):
+      self.ucionice = ucionice
+      self.predmet = predmet
+      self.profesor = profesor
+      
+ODP = Ispit([109, '109a', 108], 'Osnove distribuiranog programiranja', "prof. Imre Lendak")
+f = open("zadatak5.json","w")
+json.dump(ODP.__dict__,f)
+f.close()
