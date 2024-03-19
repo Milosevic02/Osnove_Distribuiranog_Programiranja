@@ -156,3 +156,10 @@ ODP = Ispit([109, '109a', 108], 'Osnove distribuiranog programiranja', "prof. Im
 f = open("zadatak5.json","w")
 json.dump(ODP.__dict__,f)
 f.close()
+
+#6
+f = open("zadatak6.json")
+recnik = json.load(f)
+for key,value in recnik.items():
+    print(key,value,sep=":")
+f.close()
