@@ -136,3 +136,10 @@ f.close()
 
 for s in studenti: print(s)
 
+#4
+import pickle
+
+f = open("zadatak4.txt","wb")
+pickle.dump(studenti,f)
+f.close()
+
