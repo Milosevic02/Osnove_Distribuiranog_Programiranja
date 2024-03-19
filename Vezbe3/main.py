@@ -47,3 +47,57 @@ print("Prosecna visina po gradu:")
 print(f"{novi_sad}, prosečna visina: {novi_sad.prosek()}")
 print(f"{sombor}, prosečna visina: {sombor.prosek()}")
 print(f"{zrenjanin}, prosečna visina: {zrenjanin.prosek()}")
+
+
+#3
+class Ucenik:
+    def __init__(self,ime,prezime):
+        self.ime = ime
+        self.prezime = prezime
+        self.ocene = {}
+        self.zakljucne_ocene = {}
+    
+    def upisi_ocenu(self,predmet,ocena):
+        if predmet in self.ocene.keys():
+            self.ocene[predmet].append(ocena)
+        else:
+            self.ocene[predmet] = [ocena]
+            
+    def zakljuci_ocenu(self,predmet):
+        if predmet in self.ocene.keys():
+            try:
+                zakljucna = round(sum(self.ocene[predmet])/len(self.ocene[predmet]))
+                self.zakljucne_ocene[predmet] = zakljucna
+                return zakljucna
+            except Exception as e:
+                print("Greska:",e)
+        return None
+    
+    def prosek(self):
+        try:
+            return sum(self.zakljucne_ocene.values())/len(self.zakljucne_ocene.values())
+        except Exception as e:
+            print("Greska: ",e)
+            
+    def __str__(self):
+        return f"{self.ime} {self.prezime} ocene : {self.ocene}"
+    
+ucenik1 = Ucenik("Marko", "Markovic")
+ucenik1.upisi_ocenu("matematika", 5)
+ucenik1.upisi_ocenu("matematika", 4)
+ucenik1.upisi_ocenu("matematika", 5)
+ucenik1.upisi_ocenu("matematika", 5)
+
+print(ucenik1)
+print("Ocene: ", ucenik1.ocene)
+print("Zakljucna ocena iz matematike: ",ucenik1.zakljuci_ocenu("matematika"))
+print("Zakljucna ocena iz srpskog: ", ucenik1.zakljuci_ocenu("srpski"))
+
+ucenik1.upisi_ocenu("srpski", 5)
+ucenik1.upisi_ocenu("srpski", 4)
+ucenik1.upisi_ocenu("srpski", 3)
+ucenik1.upisi_ocenu("srpski", 5)
+
+print("Ocene: ", ucenik1.ocene)
+print("Zakljucna ocena iz srpskog: ", ucenik1.zakljuci_ocenu("srpski"))
+print("Prosek ucenika", ucenik1.prosek())
