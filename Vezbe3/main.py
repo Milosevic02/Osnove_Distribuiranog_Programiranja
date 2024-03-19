@@ -108,3 +108,15 @@ f = open("zadatak1.txt","w")
 f.write("PR41/2021 Dragan Milosevic")
 f.close()
 
+#2
+f = open("zadatak2.txt","a")
+while True:
+    unos = input("Unesi novi red ili q za izlaz:")
+    if unos == 'q':
+        break
+    f.write(unos+"\n")
+f.close()
+
+f = open("zadatak2.txt")
+print(f.read())
+f.close()
