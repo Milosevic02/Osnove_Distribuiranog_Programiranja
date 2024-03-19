@@ -120,3 +120,19 @@ f.close()
 f = open("zadatak2.txt")
 print(f.read())
 f.close()
+
+#3
+from student import Student
+
+studenti = []
+
+f = open("zadatak3.txt")
+for red in f:
+    reci = red.split("|")
+    reci[3] = reci[3].replace("\n","")
+    student = Student(reci[0],reci[1],reci[2],reci[3])
+    studenti.append(student)
+f.close()
+
+for s in studenti: print(s)
+
