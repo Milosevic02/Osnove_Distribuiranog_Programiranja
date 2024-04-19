@@ -59,6 +59,10 @@ while True:
         klijent.send(pokupi_jmbg())
         klijent.send(pokupi_predmete())
         print(klijent.recv(1024).decode())
+    elif operacija == "6":
+        klijent.send(("READ_SORT").encode())
+        klijent.send(pokupi_jmbg())
+        print(klijent.recv(1024).decode())
 
 
     else:
