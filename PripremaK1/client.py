@@ -8,16 +8,9 @@ def pokupi_objekat():
     ime = input("Ime ->")
     prezime = input("Prezime->")
     godina, mesec, dan = input("Godina, mesec, dan proizvodnje u obliku YYYY-MM-DD -> ").split('-')
-    profesor = Profesor(jmbg,ime,prezime,date(int(godina),int(mesec),int(dan)))
-    f = open("profesor.json",'w')
-    json.dump(profesor.__dict__,f)
-    f.close()
+    profesor = Profesor(jmbg,ime,prezime, date(int(godina), int(mesec), int(dan)).isoformat())
     
-    f = open("profesor.json")
-    profesor_json = json.load(f)
-    f.close()
-    
-    return pickle.dumps(profesor_json)
+    return pickle.dumps(profesor)
 
 #3,4,6
 def pokupi_jmbg():
@@ -48,6 +41,14 @@ while True:
     if operacija == "1":
         klijent.send(("ADD").encode())
         klijent.send(pokupi_objekat())
+        print(klijent.recv(1024).decode())
+    elif operacija == "2":
+        klijent.send(("EDIT").encode())
+        klijent.send(pokupi_objekat())
+        print(klijent.recv(1024).decode())
+    elif operacija == "3":
+        klijent.send(("DELETE").encode())
+        klijent.send(pokupi_jmbg())
         print(klijent.recv(1024).decode())
     else:
         print("Molimo unesite validnu operaciju.")
