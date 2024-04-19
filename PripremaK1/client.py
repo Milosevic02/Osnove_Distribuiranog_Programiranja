@@ -53,7 +53,7 @@ while True:
     elif operacija == "4":
         klijent.send(("READ").encode())
         klijent.send(pokupi_jmbg())
-        ispisi_profesora(klijent.recv(1024).decode())
+        ispisi_profesora(klijent.recv(1024))
     elif operacija == "5":
         klijent.send(("ADD_SUB").encode())
         klijent.send(pokupi_jmbg())
