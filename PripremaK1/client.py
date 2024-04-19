@@ -50,6 +50,12 @@ while True:
         klijent.send(("DELETE").encode())
         klijent.send(pokupi_jmbg())
         print(klijent.recv(1024).decode())
+    elif operacija == "4":
+        klijent.send(("READ").encode())
+        klijent.send(pokupi_jmbg())
+        ispisi_profesora(klijent.recv(1024).decode())
+
+
     else:
         print("Molimo unesite validnu operaciju.")
         continue
