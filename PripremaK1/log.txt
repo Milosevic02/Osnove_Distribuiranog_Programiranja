@@ -1,0 +1,10 @@
+Profesor sa jmbg 543  je sacuvan u bazu!
+Profesor sa jmbg 4532  je sacuvan u bazu!
+Profesor sa jmbg 3  je sacuvan u bazu!
+Profesor sa jmbg 3 izmenjen u bazi!
+Profesor sa JMBG-om: b'3' ne postoji u bazi
+Profesor sa JMBG-om: b'1' ne postoji u bazi
+Profesor sa JMBG-om: b'3' ne postoji u bazi
+Profesor sa JMBG-om: b'3' ne postoji u bazi
+Profesor sa JMBG-om: b'1' ne postoji u bazi
+Dodati su predmeti za profesora sa JMBG-om: 3
