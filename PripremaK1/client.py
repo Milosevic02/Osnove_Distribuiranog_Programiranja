@@ -4,7 +4,7 @@ from profesor import Profesor
 
 #1,2
 def pokupi_objekat():
-    jmbg = input("jmbg leka -> ")
+    jmbg = input("jmbg profesora -> ")
     ime = input("Ime ->")
     prezime = input("Prezime->")
     godina, mesec, dan = input("Godina, mesec, dan proizvodnje u obliku YYYY-MM-DD -> ").split('-')
@@ -24,6 +24,17 @@ def pokupi_jmbg():
     return input("JMBG ->").encode()
 
 #5
+def pokupi_predmete():
+    predmeti = input("unesi predmete odvojene zarezom").split(",")
+    return pickle.dumps(predmeti)
+
+
+def ispisi_profesora(poruka):
+        try:
+                profesor = pickle.loads(poruka)
+                print(profesor)
+        except:
+                print(poruka.decode())
 
 
 klijent = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
