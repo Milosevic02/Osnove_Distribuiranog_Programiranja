@@ -43,5 +43,17 @@ print("Veza sa serverom uspostavljena")
 
 
 while True:
-    poruka = input("Unesi poruku")
-    klijent.send(poruka.encode())
+    operacija = input("\nIzaberi opciju:\n 1.Dodaj profesora \n 2.Izmeni profesora\n 3.Obrisi profesora\n 4.Pronadji profesora\n 5.Dodaj predmete profesoru\n 6.Procitaj predmete profesora\n 7.Svi profesori zaposleni duze od 20 godina\n")
+    if not operacija : break
+    if operacija == "1":
+        klijent.send(("ADD").encode())
+        klijent.send(pokupi_objekat())
+        print(klijent.recv(1024).decode())
+    else:
+        print("Molimo unesite validnu operaciju.")
+        continue
+    
+
+print("Zatvaranje konekcije.") 
+klijent.close()
+
