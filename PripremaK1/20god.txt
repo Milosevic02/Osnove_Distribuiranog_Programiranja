@@ -1,0 +1,1 @@
+1 - ime1 - prezime1 - 1980-05-05,predmeti: ['p1', 'p2', 'p3', 'a3', 'b4']3 - ime3 - prezime3 - 2000-05-05,predmeti: ['s1, p1, r4']
