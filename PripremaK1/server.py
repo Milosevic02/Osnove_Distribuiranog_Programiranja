@@ -1,6 +1,10 @@
 import socket,pickle
+from profesor import Profesor
 
-profesori = {}
+
+profesori = {"1" : Profesor("1", "ime1", "prezime1", "1980-05-05", ["p1", "p2", "p3", "a3", "b4"]),
+    "2" : Profesor("2", "ime2", "prezime2", "2022-05-05", ["p4", "p5", "p6"]),
+    "3" : Profesor("3", "ime3", "prezime3", "2000-05-05", ["s1, p1, r4"])}
 
 def log_info(message):
     log = open("log.txt","a")
@@ -41,9 +45,10 @@ def procitaj(poruka):
     if poruka not in profesori:
         odgovor = f"Profesor sa JMBG-om: {poruka} ne postoji u bazi"
         log_info(odgovor)
-    else:
-        odgovor = pickle.dump(profesori[poruka])
         return odgovor.encode()
+    else:
+        odgovor = pickle.dumps(profesori[poruka])
+        return odgovor
 
 def dodaj_predmete(jmbg,predmeti):
     if jmbg not in profesori:
@@ -60,14 +65,19 @@ def sortiraj(jmbg):
     if jmbg not in profesori:
         odgovor = f"Profesor sa JMBG-om: {jmbg} ne postoji u bazi"
     else:
-        odgovor = profesori[jmbg].predmeti.sort()
+        odgovor = "Prdemeti: "
+        sortirana = profesori[jmbg].predmeti
+        sortirana.sort()
+        for predmet in sortirana:
+            odgovor += f"{predmet},"
     return odgovor.encode()
 
 def preko20():
     f = open("20god.txt","w")
     retVal = []
     for profesor in profesori.values():
-        god = 2024 - int(profesor.datum.year)
+        year = profesor.datum.split("-")[0]
+        god = 2024 - int(year)
         if god >= 20:
             retVal.append(profesor)
             f.write(profesor.__str__())
@@ -91,15 +101,15 @@ while True:
         case "EDIT":
             odgovor = izmeni_profesora(kanal.recv(1024))
         case "DELETE":
-            odgovor = obrisi(kanal.recv(1024))
+            odgovor = obrisi(kanal.recv(1024).decode())
         case "READ":
-            odgovor = procitaj(kanal.recv(1024))
+            odgovor = procitaj(kanal.recv(1024).decode())
         case "ADD_SUB":
             jmbg = kanal.recv(1024).decode()
-            predmeti = kanal.recv(1024).decode()
+            predmeti = kanal.recv(1024)
             odgovor = dodaj_predmete(jmbg,predmeti)
         case "READ_SORT":
-            jmbg = sortiraj(kanal.recv(1024).decode())
+            odgovor = sortiraj(kanal.recv(1024).decode())
         case "20_GOD":
             preko20()
             odgovor = "Procitaj 20god.txt".encode()
