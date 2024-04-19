@@ -43,11 +43,11 @@ def procitaj(poruka):
         log_info(odgovor)
     else:
         odgovor = pickle.dump(profesori[poruka])
-        return odgovor
+        return odgovor.encode()
 
 def dodaj_predmete(jmbg,predmeti):
     if jmbg not in profesori:
-        odgovor = f"Profesor sa JMBG-om: {poruka} ne postoji u bazi"
+        odgovor = f"Profesor sa JMBG-om: {jmbg} ne postoji u bazi"
     else:
         pr = pickle.loads(predmeti)
         profesori[jmbg].predmeti.extend(pr)
@@ -56,7 +56,23 @@ def dodaj_predmete(jmbg,predmeti):
     log_info(odgovor)
     return odgovor.encode()
 
+def sortiraj(jmbg):
+    if jmbg not in profesori:
+        odgovor = f"Profesor sa JMBG-om: {jmbg} ne postoji u bazi"
+    else:
+        odgovor = profesori[jmbg].predmeti.sort()
+    return odgovor.encode()
 
+def preko20():
+    f = open("20god.txt","w")
+    retVal = []
+    for profesor in profesori.values():
+        god = 2024 - int(profesor.datum.year)
+        if god >= 20:
+            retVal.append(profesor)
+            f.write(profesor.__str__())
+            
+    f.close()
 
 server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 server.bind(('localhost',6000))
@@ -85,7 +101,8 @@ while True:
         case "READ_SORT":
             jmbg = sortiraj(kanal.recv(1024).decode())
         case "20_GOD":
-            
+            preko20()
+            odgovor = "Procitaj 20god.txt".encode()
             
             
     kanal.send(odgovor)

@@ -66,8 +66,6 @@ while True:
     elif operacija == "7":
         klijent.send(("20_GOD").encode())
         klijent.recv(1024).decode()
-        print("Procitajte tekstualnu datoteku.")
-
     else:
         print("Molimo unesite validnu operaciju.")
         continue
