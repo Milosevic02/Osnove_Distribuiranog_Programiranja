@@ -30,15 +30,33 @@ def izmeni_profesora(poruka):
 def obrisi(poruka):
     if poruka in profesori:
         del profesori[poruka]
-        odgovor = f"Profesor sa JMBG-om: {jmbg} je uspesno obrisan"
+        odgovor = f"Profesor sa JMBG-om: {poruka} je uspesno obrisan"
     else:
-        odgovor = f"Profesor sa JMBG-om: {jmbg} ne postoji u bazi"
+        odgovor = f"Profesor sa JMBG-om: {poruka} ne postoji u bazi"
         
     log_info(odgovor)
     return odgovor.encode()
 
 def procitaj(poruka):
+    if poruka not in profesori:
+        odgovor = f"Profesor sa JMBG-om: {poruka} ne postoji u bazi"
+        log_info(odgovor)
+    else:
+        odgovor = pickle.dump(profesori[poruka])
+        return odgovor
+
+def dodaj_predmete(jmbg,predmeti):
+    if jmbg not in profesori:
+        odgovor = f"Profesor sa JMBG-om: {poruka} ne postoji u bazi"
+    else:
+        pr = pickle.loads(predmeti)
+        profesori[jmbg].predmeti.extend(pr)
+        odgovor = f"Dodati su predmeti za profesora sa JMBG-om: {jmbg}"
     
+    log_info(odgovor)
+    return odgovor.encode()
+
+
 
 server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 server.bind(('localhost',6000))
@@ -61,9 +79,11 @@ while True:
         case "READ":
             odgovor = procitaj(kanal.recv(1024))
         case "ADD_SUB":
-            
+            jmbg = kanal.recv(1024).decode()
+            predmeti = kanal.recv(1024).decode()
+            odgovor = dodaj_predmete(jmbg,predmeti)
         case "READ_SORT":
-            
+            jmbg = sortiraj(kanal.recv(1024).decode())
         case "20_GOD":
             
             
