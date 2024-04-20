@@ -8,7 +8,7 @@ def pokupi_objekat():
     ime = input("Ime ->")
     prezime = input("Prezime->")
     godina, mesec, dan = input("Godina, mesec, dan proizvodnje u obliku YYYY-MM-DD -> ").split('-')
-    profesor = Profesor(jmbg,ime,prezime, date(int(godina), int(mesec), int(dan)).isoformat())
+    profesor = Profesor(jmbg,ime,prezime, date(int(godina), int(mesec), int(dan)).isoformat(),[])
     
     return pickle.dumps(profesor)
 
