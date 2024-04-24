@@ -26,3 +26,12 @@ def izmeni_lek(poruka):
         odgovor = f"Lek sa id-em: {lek.id} uspesno izmenjen."
     log_info(odgovor)
     return odgovor.encode()
+
+def izbrisi_lek(id):
+    if id not in lekovi:
+        odgovor = f"Lek sa id-em: {id} ne postoji u bazi!"
+    else:
+        del lekovi[id]
+        odgovor = f"Lek sa id-em: {id} uspesno obrisan."
+    log_info(odgovor)
+    return odgovor.encode()
