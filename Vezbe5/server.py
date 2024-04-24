@@ -94,9 +94,10 @@ def main():
             
         opcija = kanal.recv(1024).decode()
         if not opcija : break
-        if opcija not in dk.korisinici[temp_korisnik.ime].prava:
-            odgovor = "Nemate prava za ovu opciju "
+        if opcija not in dk.korisnici[temp_korisnik.ime].prava:
+            kanal.send(("False").encode())
         else:
+            kanal.send(("True").encode())
             if opcija == "ADD": # Dodaj lek
                 odgovor = dodaj_lek(kanal.recv(1024))
             elif opcija == "UPDATE": # Izmeni lek
@@ -109,7 +110,7 @@ def main():
                 id = kanal.recv(1024).decode()
                 sastojci = kanal.recv(1024)
                 odgovor = dodaj_sastojke(id, sastojci)        
-        kanal.send(odgovor)
+            kanal.send(odgovor)
     
     print("Server se gasi.")
     server.close()
