@@ -1,6 +1,7 @@
 import socket, pickle
 from datetime import date
 from lek import Lek
+from korisnik import Korisnik
 
 def pokupi_informacije_leka_za_slanje():
     id = input("ID leka -> ")
@@ -23,12 +24,26 @@ def popupi_informacije_sastojci_za_slanje():
     sastojci = input("Sastojci (odvojeni zarezom) -> ").split(',')
     return pickle.dumps(sastojci)
 
+def pokupi_korisnika():
+    ime = input("Unesi ime:")
+    lozinka = input("Unesi Lozinku:")
+    k = Korisnik(ime,lozinka)
+    return pickle.dumps(k)
+
 def main():
     klijent = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     klijent.connect(('localhost', 6000))
     print("Veza sa serverom je uspostavljena.")
+    autentifikovan = "False"
 
     while True: 
+        while autentifikovan == "False":
+            klijent.send(pokupi_korisnika())
+            autentifikovan = klijent.recv(1024).decode()
+            if autentifikovan == "False" : print("Ime ili lozinka nije ispravno pokusajte opet:\n")
+            
+        print("Uspesno ste se ulogovali\n")
+        
         operacija = input("Odaberite operaciju: \n1.Dodaj lek \n2.Izmeni lek \n3.Obrisi lek\n4.Procitaj lek\n5.Dodaj sastojke\n") 
         if not operacija : break         
         if operacija == "1": # Dodaj lek   
