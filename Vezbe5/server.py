@@ -1,6 +1,11 @@
 import socket,pickle
-
+import direktorijum_korisnika as dk
 lekovi = {}
+dk.dodaj_korisnika("Pera","pera")
+dk.dodaj_korisnika("Zika","zika")
+dk.dodaj_korisnika("Djole","djole")
+
+
 
 def log_info(message):
     log = open("log.txt", "a")
@@ -56,6 +61,10 @@ def dodaj_sastojke(id, podaci):
     log_info(odgovor)
     return odgovor.encode()
 
+def proveri_korisnika(k):
+    korisnik = pickle.loads(k)
+    return dk.autentifikacija(korisnik.ime,korisnik.lozinka)
+
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('localhost', 6000))
@@ -66,6 +75,10 @@ def main():
     print(f"Prihvacena je konekcija sa adrese: {adresa}")
 
     while True: 
+        while(not proveri_korisnika(kanal.recv(1024))):
+            kanal.send(("False").encode())
+        kanal.send(("True").encode())
+        
         opcija = kanal.recv(1024).decode()
         if not opcija : break
         if opcija == "ADD": # Dodaj lek
