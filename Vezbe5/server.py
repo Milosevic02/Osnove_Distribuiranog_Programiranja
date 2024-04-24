@@ -35,3 +35,12 @@ def izbrisi_lek(id):
         odgovor = f"Lek sa id-em: {id} uspesno obrisan."
     log_info(odgovor)
     return odgovor.encode()
+
+def procitaj_lek(id):
+    if id not in lekovi:
+        odgovor = f"Lek sa id-em: {id} ne postoji u bazi!"
+        log_info(odgovor)
+        return odgovor.encode()
+    else:
+        odgovor = pickle.dumps(lekovi[id])
+        return odgovor
