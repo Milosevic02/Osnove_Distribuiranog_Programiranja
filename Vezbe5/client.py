@@ -27,7 +27,7 @@ def popupi_informacije_sastojci_za_slanje():
 def pokupi_korisnika():
     ime = input("Unesi ime:")
     lozinka = input("Unesi Lozinku:")
-    k = Korisnik(ime,lozinka)
+    k = Korisnik(ime,lozinka,[])
     return pickle.dumps(k)
 
 def main():
@@ -35,38 +35,55 @@ def main():
     klijent.connect(('localhost', 6000))
     print("Veza sa serverom je uspostavljena.")
     autentifikovan = "False"
+    autorizacija = "False"
 
     while True: 
         while autentifikovan == "False":
             klijent.send(pokupi_korisnika())
             autentifikovan = klijent.recv(1024).decode()
             if autentifikovan == "False" : print("Ime ili lozinka nije ispravno pokusajte opet:\n")
-            
-        print("Uspesno ste se ulogovali\n")
+            else:print("Uspesno ste se ulogovali\n")
+
         
         operacija = input("Odaberite operaciju: \n1.Dodaj lek \n2.Izmeni lek \n3.Obrisi lek\n4.Procitaj lek\n5.Dodaj sastojke\n") 
-        if not operacija : break         
+        if not operacija : break   
         if operacija == "1": # Dodaj lek   
-            klijent.send(("ADD").encode())  
-            klijent.send(pokupi_informacije_leka_za_slanje())
-            print(klijent.recv(1024).decode())
+            klijent.send(("ADD").encode())
+            if(klijent.recv(1024).decode() == "False"):     
+                print("Nemate pravo na ovu opciju")
+            else:
+                klijent.send(pokupi_informacije_leka_za_slanje())
+                print(klijent.recv(1024).decode())
         elif operacija == "2": # Izmeni lek 
             klijent.send(("UPDATE").encode())
-            klijent.send(pokupi_informacije_leka_za_slanje())
-            print(klijent.recv(1024).decode())
+            if(klijent.recv(1024).decode() == "False"):     
+                print("Nemate pravo na ovu opciju")
+            else:
+                klijent.send(pokupi_informacije_leka_za_slanje())
+                print(klijent.recv(1024).decode())
         elif operacija == "3": # Obrisi lek 
             klijent.send(("DELETE").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())
-            print(klijent.recv(1024).decode())     
+            if(klijent.recv(1024).decode() == "False"):     
+                print("Nemate pravo na ovu opciju")
+            else:
+                klijent.send(pokupi_informaciju_id_leka_za_slanje())
+                print(klijent.recv(1024).decode())     
         elif operacija == "4": # Procitaj lek 
             klijent.send(("READ").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())
-            iscitaj_lek(klijent.recv(1024))
+            odgovor = klijent.recv(1024).decode()
+            if(odgovor == "False"):     
+                print("Nemate pravo na ovu opciju")
+            else:
+                klijent.send(pokupi_informaciju_id_leka_za_slanje())
+                iscitaj_lek(klijent.recv(1024))
         elif operacija == "5": # Dodaj sastojke 
             klijent.send(("ADD_INGR").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())        
-            klijent.send(popupi_informacije_sastojci_za_slanje())
-            print(klijent.recv(1024).decode())    
+            if(klijent.recv(1024).decode() == "False"):     
+                print("Nemate pravo na ovu opciju")
+            else:
+                klijent.send(pokupi_informaciju_id_leka_za_slanje())        
+                klijent.send(popupi_informacije_sastojci_za_slanje())
+                print(klijent.recv(1024).decode())    
         else:
             print("Molimo unesite validnu operaciju.")
             continue
