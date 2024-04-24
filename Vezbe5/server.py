@@ -1,9 +1,11 @@
 import socket,pickle
 import direktorijum_korisnika as dk
+from korisnik import Korisnik
+
 lekovi = {}
-dk.dodaj_korisnika("Pera","pera")
-dk.dodaj_korisnika("Zika","zika")
-dk.dodaj_korisnika("Djole","djole")
+dk.dodaj_korisnika("Pera","pera",["ADD","UPDATE"])
+dk.dodaj_korisnika("Zika","zika",["ADD","UPDATE","DELETE"])
+dk.dodaj_korisnika("Djole","djole",["ADD","UPDATE","DELETE","READ","ADD_INGR"])
 
 
 
@@ -61,8 +63,12 @@ def dodaj_sastojke(id, podaci):
     log_info(odgovor)
     return odgovor.encode()
 
-def proveri_korisnika(k):
+def ocitaj_korisnika(k):
     korisnik = pickle.loads(k)
+    return korisnik
+
+def proveri_korisnika(k):
+    korisnik = ocitaj_korisnika(k)
     return dk.autentifikacija(korisnik.ime,korisnik.lozinka)
 
 def main():
@@ -73,26 +79,36 @@ def main():
 
     kanal, adresa = server.accept()
     print(f"Prihvacena je konekcija sa adrese: {adresa}")
+    autentifikacija = False
+    ulogovan = False
 
     while True: 
-        while(not proveri_korisnika(kanal.recv(1024))):
-            kanal.send(("False").encode())
-        kanal.send(("True").encode())
-        
+        if not ulogovan:
+            while(not autentifikacija):
+                odgovor = kanal.recv(1024)
+                autentifikacija = proveri_korisnika(odgovor)
+                if not autentifikacija : kanal.send(("False").encode())
+            kanal.send(("True").encode())
+            ulogovan = True
+            temp_korisnik = ocitaj_korisnika(odgovor)
+            
         opcija = kanal.recv(1024).decode()
         if not opcija : break
-        if opcija == "ADD": # Dodaj lek
-            odgovor = dodaj_lek(kanal.recv(1024))
-        elif opcija == "UPDATE": # Izmeni lek
-            odgovor = izmeni_lek(kanal.recv(1024))
-        elif opcija == "DELETE": # Obrisi lek
-            odgovor = izbrisi_lek(kanal.recv(1024).decode())
-        elif opcija == "READ": # Procitaj lek
-            odgovor = procitaj_lek(kanal.recv(1024).decode())            
-        elif opcija == "ADD_INGR": # Dodaj sastojke
-            id = kanal.recv(1024).decode()
-            sastojci = kanal.recv(1024)
-            odgovor = dodaj_sastojke(id, sastojci)        
+        if opcija not in dk.korisinici[temp_korisnik.ime].prava:
+            odgovor = "Nemate prava za ovu opciju "
+        else:
+            if opcija == "ADD": # Dodaj lek
+                odgovor = dodaj_lek(kanal.recv(1024))
+            elif opcija == "UPDATE": # Izmeni lek
+                odgovor = izmeni_lek(kanal.recv(1024))
+            elif opcija == "DELETE": # Obrisi lek
+                odgovor = izbrisi_lek(kanal.recv(1024).decode())
+            elif opcija == "READ": # Procitaj lek
+                odgovor = procitaj_lek(kanal.recv(1024).decode())            
+            elif opcija == "ADD_INGR": # Dodaj sastojke
+                id = kanal.recv(1024).decode()
+                sastojci = kanal.recv(1024)
+                odgovor = dodaj_sastojke(id, sastojci)        
         kanal.send(odgovor)
     
     print("Server se gasi.")

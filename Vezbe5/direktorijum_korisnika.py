@@ -1,4 +1,5 @@
 import hashlib
+from korisnik import Korisnik
 
 korisnici = {}
 
@@ -8,15 +9,15 @@ def hesiranje(tekst):
     return hash_tekst
 
 
-def dodaj_korisnika(ime,lozinka):
+def dodaj_korisnika(ime,lozinka,prava):
     hash_lozinka = hesiranje(lozinka)
     if ime not in korisnici:
-        korisnici[ime] = hash_lozinka 
+        korisnici[ime] = Korisnik(ime,hash_lozinka,prava)
     else:
         print("Neuspesno dodavanje korisnik sa tim imenom vec postoji")
     
 def autentifikacija(ime,lozinka):
     if ime in korisnici:
-        if hesiranje(lozinka) == korisnici[ime]:
+        if hesiranje(lozinka) == korisnici[ime].lozinka:
             return True
     return False
