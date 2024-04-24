@@ -16,3 +16,13 @@ def dodaj_lek(poruka):
         odgovor = f"Lek sa id-em: {lek.id} uspesno upisan u bazu."
     log_info(odgovor)
     return odgovor.encode()
+
+def izmeni_lek(poruka):
+    lek = pickle.loads(poruka)
+    if lek.id not in lekovi:
+        odgovor = f"Lek sa id-em: {lek.id} ne postoji u bazi!"
+    else:
+        lekovi[lek.id] = lek
+        odgovor = f"Lek sa id-em: {lek.id} uspesno izmenjen."
+    log_info(odgovor)
+    return odgovor.encode()
