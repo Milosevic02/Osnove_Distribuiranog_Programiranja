@@ -72,3 +72,52 @@ def procitaj_iz_fajla(naziv_datoteke, rezim_otvaranja):
     data = pickle.loads(f)
     f.close()
     return data
+
+def main():
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind(('localhost', 6000))
+    server.listen()
+    print("Server je pokrenut.")
+
+    kanal, adresa = server.accept()
+    print(f"Prihvacena je konekcija sa adrese: {adresa}")
+
+    while True: 
+        opcija = kanal.recv(1024).decode()
+        if not opcija : break
+        if opcija == "ADD": # Dodaj lek
+            odgovor = dodaj_lek(kanal.recv(1024))
+        elif opcija == "UPDATE": # Izmeni lek
+            odgovor = izmeni_lek(kanal.recv(1024))
+        elif opcija == "DELETE": # Obrisi lek
+            odgovor = izbrisi_lek(kanal.recv(1024).decode())
+        elif opcija == "READ": # Procitaj lek
+            odgovor = procitaj_lek(kanal.recv(1024).decode())            
+        elif opcija == "ADD_INGR": # Dodaj sastojke
+            id = kanal.recv(1024).decode()
+            sastojci = kanal.recv(1024)
+            odgovor = dodaj_sastojke(id, sastojci)
+        elif opcija == "BACKUP": # Upisi sve u fajl backup.txt                 
+            pisi_u_fajl("backup.txt", "wb")           
+            odgovor = ("Uspesno upisani svi podaci u tekstualni fajl!").encode()
+        elif opcija == "REPLICATE": # Kopiraj fajl na drugu lokaciju
+            location = kanal.recv(1024).decode()
+            data = procitaj_iz_fajla("backup.txt", "rb")
+            pisi_u_fajl(location + "/backup.txt", "wb", data) #ocekujemo da folder postoji        
+            odgovor = ("Uspesno prekopiran fajl na drugu lokaciju!").encode()
+        elif opcija == "READ_ALL": # Pročitaj sve za replikaciju
+            global lekovi
+            kanal.send(pickle.dumps(lekovi))
+            odgovor = ("Uspesno procitani svi podaci!").encode()            
+        elif opcija == "WRITE_ALL": # Pročitaj sve za replikaciju
+            lekovi = pickle.loads(kanal.recv(1024))
+            odgovor = ("Uspesno upisani svi podaci!").encode()
+            print("Replicirano:")
+            for l in lekovi.values(): print(l)        
+        kanal.send(odgovor)
+    
+    print("Server se gasi.")
+    server.close()
+
+
+main()
