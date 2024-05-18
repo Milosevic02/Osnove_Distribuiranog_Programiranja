@@ -62,7 +62,7 @@ def dodaj_sastojke(id, podaci):
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('localhost', 7000))
+    server.bind(('localhost', 6000))
     server.listen()
     print("Server je pokrenut.")
 
