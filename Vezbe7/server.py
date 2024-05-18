@@ -1,5 +1,7 @@
 import socket, pickle
 
+stanje = ""
+
 lekovi = {}
 
 def log_info(message):
@@ -68,6 +70,7 @@ def main():
     print(f"Prihvacena je konekcija sa adrese: {adresa}")
 
     while True: 
+        global stanje
         opcija = kanal.recv(1024).decode()
         if not opcija : break
         if opcija == "ADD": # Dodaj lek
@@ -82,6 +85,12 @@ def main():
             id = kanal.recv(1024).decode()
             sastojci = kanal.recv(1024)
             odgovor = dodaj_sastojke(id, sastojci)      
+        elif opcija == "GET_STATE": # Proveri stanjee
+            odgovor = stanje.encode()
+        elif opcija == "SET_STATE": # Azuriraj stanje
+            stanje = kanal.recv(1024).decode()
+            print(f"Novo stanje servera: {stanje}")
+            odgovor = ("Stanje uspesno azurirano!").encode() 
         kanal.send(odgovor)
     
     print("Server se gasi.")
