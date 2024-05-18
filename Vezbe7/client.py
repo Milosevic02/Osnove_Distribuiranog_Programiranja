@@ -19,44 +19,72 @@ def iscitaj_lek(odgovor):
     except:
         print(odgovor.decode())
 
-def pokupi_informacije_sastojci_za_slanje():
+def popupi_informacije_sastojci_za_slanje():
     sastojci = input("Sastojci (odvojeni zarezom) -> ").split(',')
     return pickle.dumps(sastojci)
 
 def main():
-    klijent = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    klijent.connect(('localhost', 6000))
-    print("Veza sa serverom je uspostavljena.")
+    try:
+        klijentP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        klijentP.connect(('localhost', 6000))
+        print("Veza sa serverom na portu 6000 je uspostavljena.")
+    except Exception as ex:
+        print(ex)
 
-    while True: 
+    try:
+        klijentS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        klijentS.connect(('localhost', 7000))
+        print("Veza sa serverom na portu 7000 je uspostavljena.")
+    except Exception as ex:
+        print(ex)
+
+    while True:             
         operacija = input("Odaberite operaciju: \n1.Dodaj lek \n2.Izmeni lek \n3.Obrisi lek\n4.Procitaj lek\n5.Dodaj sastojke\n") 
         if not operacija : break         
-        if operacija == "1": # Dodaj lek   
-            klijent.send(("ADD").encode())  
-            klijent.send(pokupi_informacije_leka_za_slanje())
-            print(klijent.recv(1024).decode())
+        if operacija == "1": # Dodaj lek
+            try:   
+                klijentP.send(("ADD").encode())  
+                klijentP.send(pokupi_informacije_leka_za_slanje())
+                print(klijentP.recv(1024).decode())
+            except Exception as ex:
+                print(ex)
+                try:   
+                    klijentS.send(("ADD").encode())  
+                    klijentS.send(pokupi_informacije_leka_za_slanje())
+                    print(klijentS.recv(1024).decode())
+                except Exception as ex:
+                    print(ex)
         elif operacija == "2": # Izmeni lek 
-            klijent.send(("UPDATE").encode())
-            klijent.send(pokupi_informacije_leka_za_slanje())
-            print(klijent.recv(1024).decode())
+            try:   
+                klijentP.send(("UPDATE").encode())
+                klijentP.send(pokupi_informacije_leka_za_slanje())
+                print(klijentP.recv(1024).decode())
+            except Exception as ex:
+                print(ex)
+                try:   
+                    klijentS.send(("UPDATE").encode())
+                    klijentS.send(pokupi_informacije_leka_za_slanje())
+                    print(klijentS.recv(1024).decode())
+                except Exception as ex:
+                    print(ex)
         elif operacija == "3": # Obrisi lek 
-            klijent.send(("DELETE").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())
-            print(klijent.recv(1024).decode())     
+            klijentP.send(("DELETE").encode())
+            klijentP.send(pokupi_informaciju_id_leka_za_slanje())
+            print(klijentP.recv(1024).decode())     
         elif operacija == "4": # Procitaj lek 
-            klijent.send(("READ").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())
-            iscitaj_lek(klijent.recv(1024))
+            klijentP.send(("READ").encode())
+            klijentP.send(pokupi_informaciju_id_leka_za_slanje())
+            iscitaj_lek(klijentP.recv(1024))
         elif operacija == "5": # Dodaj sastojke 
-            klijent.send(("ADD_INGR").encode())
-            klijent.send(pokupi_informaciju_id_leka_za_slanje())        
-            klijent.send(pokupi_informacije_sastojci_za_slanje())
-            print(klijent.recv(1024).decode())   
+            klijentP.send(("ADD_INGR").encode())
+            klijentP.send(pokupi_informaciju_id_leka_za_slanje())        
+            klijentP.send(popupi_informacije_sastojci_za_slanje())
+            print(klijentP.recv(1024).decode())    
         else:
             print("Molimo unesite validnu operaciju.")
             continue
 
-    klijent.close() 
+    klijentP.close() 
     print("Zatvaranje konekcije.")
     
 main()
