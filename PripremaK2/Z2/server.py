@@ -4,7 +4,7 @@ stanje = ""
 lekovi = {}
 
 def log_info(message):
-    # Log
+    
     log = open("log.txt", "a")
     log.write(message + "\n")
     log.close()
@@ -48,16 +48,32 @@ def procitaj_lek(id):
         return odgovor
 
 def main():
+    global lekovi
+    global stanje
+    
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('localhost', 6000))
     server.listen()
     print("Server je pokrenut.")
 
     kanal, adresa = server.accept()
-    print(f"Prihvacena je konekcija sa adrese: {adresa}")
-
+    print(f"Prihvacena je konekcija monitora sa adrese: {adresa}")
+    
+    stanje = kanal.recv(1024).decode()
+    print(f"Novo stanje: {stanje}")
+    kanal.send(("Stanje uspesno azurirano!".encode()))
+    kanal.close()
+    
+    kanal, adresa = server.accept()
+    print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
+    
+    
     while True: 
-        opcija = kanal.recv(1024).decode()
+        try:
+            
+            opcija = kanal.recv(1024).decode()
+        except Exception as ex:
+            print(ex)
         if not opcija : break
         if opcija == "ADD": # Dodaj lek
             odgovor = dodaj_lek(kanal.recv(1024))
@@ -68,9 +84,15 @@ def main():
         elif opcija == "READ": # Procitaj lek
             odgovor = procitaj_lek(kanal.recv(1024).decode())            
         elif opcija == "READ_ALL": # Pročitaj sve za replikaciju
-            pass          
+            kanal.send(pickle.dumps(lekovi))
+            odgovor = ("Uspesno procitani svi podaci!").encode()            
+         
         elif opcija == "WRITE_ALL": # Pročitaj sve za replikaciju
-            pass
+            lekovi = pickle.loads(kanal.recv(1024))
+            odgovor = ("Uspesno upisani svi podaci!").encode()
+
+            print("Replicirano:")
+            for l in lekovi.values(): print(l)  
         try:
             kanal.send(odgovor)
         except Exception as ex:
