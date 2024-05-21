@@ -24,3 +24,21 @@ def main():
         azuriraj_stanje(monitorS, "sekundarni")
     except Exception as ex:
         print(ex)
+        
+    print("Zatvaranje konekicja.")
+    monitorP.close()
+    monitorS.close()
+    
+    monitor_server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    monitor_server.bind(('localhost',3000))
+    monitor_server.listen()
+    print("Server monitora je pokrenut.")
+    
+    kanal,adresa = monitor_server.accept()
+    print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
+    
+    kanal.send(("6000,7000").encode())
+    print("Poslati portovi, zatvaranje konekcije.")
+    kanal.close()
+    
+main()
