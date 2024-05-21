@@ -64,8 +64,13 @@ def procitaj_lek(id):
         return odgovor
 
 def main():
+    global lekovi
+    dodaj_korisnika("test", "test")
+    dodaj_korisnika("pera", "p3r@")
+    dodaj_korisnika("admin", "Adm1n")
+    
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind(('localhost', 6000))
+    server.bind(('localhost', 7000))
     server.listen()
     print("Server je pokrenut.")
 
