@@ -89,9 +89,14 @@ def main():
         elif opcija == "READ": # Procitaj lek
             odgovor = procitaj_lek(kanal.recv(1024).decode())            
         elif opcija == "READ_ALL": # Pročitaj sve za replikaciju
-            pass          
+            kanal.send(pickle.dumps(lekovi))
+            odgovor = ("Uspesno procitani svi podaci!").encode()          
         elif opcija == "WRITE_ALL": # Pročitaj sve za replikaciju
-            pass
+            lekovi = pickle.loads(kanal.recv(1024))
+            odgovor = ("Uspesno upisani svi podaci!").encode()
+            
+            print("Replicirano:")
+            for l in lekovi.values(): print(l)
         try:
             kanal.send(odgovor)
         except Exception as ex:
