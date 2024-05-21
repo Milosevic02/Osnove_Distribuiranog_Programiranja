@@ -15,6 +15,11 @@ def autentifikuj_korisnika(kanal):
 
 lekovi = {}
 
+def log_info(message):
+    log = open("log.txt", "a")
+    log.write(message + "\n")
+    log.close()
+
 def dodaj_lek(poruka):
     lek = pickle.loads(poruka)
     if lek.id in lekovi:
@@ -23,6 +28,7 @@ def dodaj_lek(poruka):
         lekovi[lek.id] = lek
         odgovor = f"Lek sa id-em: {lek.id} uspesno upisan u bazu."
     print(odgovor)
+    log_info(odgovor)
     return odgovor.encode()
 
 def izmeni_lek(poruka):
@@ -33,6 +39,7 @@ def izmeni_lek(poruka):
         lekovi[lek.id] = lek
         odgovor = f"Lek sa id-em: {lek.id} uspesno izmenjen."
     print(odgovor)
+    log_info(odgovor)
     return odgovor.encode()
     
 def izbrisi_lek(id):
@@ -42,12 +49,14 @@ def izbrisi_lek(id):
         del lekovi[id]
         odgovor = f"Lek sa id-em: {id} uspesno obrisan."
     print(odgovor)
+    log_info(odgovor)
     return odgovor.encode()
 
 def procitaj_lek(id):
     if id not in lekovi:
         odgovor = f"Lek sa id-em: {id} ne postoji u bazi!"
         print(odgovor)
+        log_info(odgovor)
         return odgovor.encode()
     else:
         print(f"Uspesno procitan lek sa id-em: {id}.")
