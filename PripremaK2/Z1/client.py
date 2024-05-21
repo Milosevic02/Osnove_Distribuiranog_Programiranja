@@ -30,6 +30,16 @@ def main():
     klijentP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     klijentP.connect(('localhost', 6000))
     print("Veza sa primarnim serverom je uspostavljena.")
+    
+    while not login(klijentP):
+        login(klijentP)
+        
+    klijentS = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    klijentS.connect(('localhost',7000))
+    print("Veza sa sekundarnim serverom je uspostavljena.")
+    
+    while not login(klijentS):
+        login(klijentS)
 
     while True: 
         operacija = input("Odaberite operaciju: \n1.Dodaj lek \n2.Izmeni lek \n3.Obrisi lek\n4.Procitaj lek\n5.Repliciraj podatke\n") 
@@ -51,7 +61,7 @@ def main():
             klijentP.send(pokupi_informaciju_id_leka_za_slanje())
             iscitaj_lek(klijentP.recv(1024))
         elif operacija == "5": # Replikacija
-            pass
+            
         else:
             print("Molimo unesite validnu operaciju.")
             continue
