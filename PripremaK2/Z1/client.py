@@ -61,12 +61,21 @@ def main():
             klijentP.send(pokupi_informaciju_id_leka_za_slanje())
             iscitaj_lek(klijentP.recv(1024))
         elif operacija == "5": # Replikacija
-            
+            try:
+                klijentP.send(("READ_ALL").encode())
+                klijentS.send(("WRITE_ALL").encode())
+                klijentS.send(klijentP.recv(1024))
+                
+                print(klijentP.recv(1024).decode())
+                print(klijentS.recv(1024).decode())
+            except Exception as ex:
+                print(ex)
         else:
             print("Molimo unesite validnu operaciju.")
             continue
 
     klijentP.close() 
+    klijentS.close()
     print("Zatvaranje konekcije.")
     
 main()
