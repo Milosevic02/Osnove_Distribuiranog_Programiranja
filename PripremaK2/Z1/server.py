@@ -76,6 +76,9 @@ def main():
 
     kanal, adresa = server.accept()
     print(f"Prihvacena je konekcija sa adrese: {adresa}")
+    
+    while not autentifikuj_korisnika(kanal):
+        autentifikuj_korisnika(kanal)
 
     while True: 
         opcija = kanal.recv(1024).decode()
