@@ -97,6 +97,12 @@ def autentifikuj_korisnika(kanal):
     else:
         kanal.send(("Neuspesna autentifikacija!").encode())
         return False
+
+def autorizacija_korisnika(opcija):
+    if opcija in trenutni_korisnik.prava:
+        return True
+    return False
+    
     
 def main():
     ocitaj_korisnike()
@@ -120,6 +126,7 @@ def main():
         except Exception as ex:
             print(ex)
         if not opcija : break
+        if 
         if opcija == "ADD": # Dodaj lice
             odgovor = dodaj_lice(kanal.recv(1024))
         elif opcija == "UPDATE": # Izmeni lice
