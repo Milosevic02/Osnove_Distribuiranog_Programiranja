@@ -30,7 +30,8 @@ def iscitaj_lice(odgovor):
 def iscitaj_sva_lica(odgovor):
     try:
         lista = pickle.loads(odgovor)
-        print(lista)
+        for l in lista:
+            print(l)
     except:
         print(odgovor.decode())
     
@@ -81,7 +82,7 @@ def main():
                 klijentP.send(pokupi_informaciju_jmbg_lica_za_slanje())
                 iscitaj_lice(klijentP.recv(1024))
         elif operacija == "5":
-            klijentP.send(("READALL").encode())
+            klijentP.send(("READ_ALL").encode())
             odgovor = klijentP.recv(1024).decode()
             if odgovor == "False":
                 print("Nemate prava za ovu opciju izaberite neku drugu")
