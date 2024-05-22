@@ -1,6 +1,9 @@
 import socket,pickle
-
+from korisnik import Korisnik
+import hashlib
 fizickaLica = {}
+
+korisnici = {}
 
 def log_info(poruka):
     log = open("log.txt","a")
@@ -56,6 +59,25 @@ def procitaj_sve():
         sortirana = sorted(lica,key=lambda l:l['prezime'])
         odgovor = pickle.dumps(sortirana)
         return odgovor
+    
+def hesiranje(tekst):
+    return hashlib.sha256(tekst.encode()).hexdigest()
+
+def dodaj_korisnika(korisnicko_ime,lozinka,prava):
+    korisnici[korisnicko_ime] = Korisnik(korisnicko_ime,hesiranje(lozinka),prava)
+    
+def ocitaj_korisnike():
+    f = open("Z3/korisnici.txt")
+    redovi = f.read().split("\n")
+    svi = []
+    for r in redovi:
+        lista = r.split(";")
+        svi.append(lista)
+    for k in svi:
+        ime = k[0]
+        sifra = k[1]
+        prava = list(k[2].split(","))
+        dodaj_korisnika(ime,sifra,prava)
     
 def main():
     global fizickaLica
