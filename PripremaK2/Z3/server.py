@@ -56,7 +56,7 @@ def procitaj_sve():
         return odgovor.encode()
     else:
         lica = list(fizickaLica.values())
-        sortirana = sorted(lica,key=lambda l:l['prezime'])
+        sortirana = sorted(lica,key=lambda l:l.prezime)
         odgovor = pickle.dumps(sortirana)
         return odgovor
     
@@ -137,8 +137,7 @@ def main():
             elif opcija == "READ": # Procitaj lice
                 odgovor = procitaj_lice(kanal.recv(1024).decode())            
             elif opcija == "READ_ALL": # Pročitaj sva lica sortirana po prezimenu
-                kanal.send(procitaj_sve())
-                odgovor = ("Uspesno procitani svi podaci!").encode()             
+                odgovor = kanal.send(procitaj_sve())            
             try:
                 kanal.send(odgovor)
             except Exception as ex:
