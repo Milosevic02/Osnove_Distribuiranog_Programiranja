@@ -44,7 +44,9 @@ def procitaj_sve():
         odgovor = f"Lista je prazna neuspesno citanje"
         return odgovor.encode()
     else:
-        odgovor = pickle.dumps(fizickaLica)
+        lica = list(fizickaLica.values())
+        sortirana = sorted(lica,key=lambda l:l['prezime'])
+        odgovor = pickle.dumps(sortirana)
         return odgovor
     
 def main():
