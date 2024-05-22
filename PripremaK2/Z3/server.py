@@ -40,8 +40,17 @@ def proictaj_lice(jmbg):
         return odgovor
     
 def procitaj_sve():
+    if len(fizickaLica) == 0:
+        odgovor = f"Lista je prazna neuspesno citanje"
+        return odgovor.encode()
+    else:
+        odgovor = pickle.dumps(fizickaLica)
+        return odgovor
     
+def main():
+    global fizickaLica
 
 
 
     
+main()
