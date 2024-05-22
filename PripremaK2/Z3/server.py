@@ -31,6 +31,17 @@ def izbrisi_lice(jmbg):
         
     return odgovor.encode()
 
+def proictaj_lice(jmbg):
+    if jmbg not in fizickaLica:
+        odgovor = f"Lice sa jmbg-om: {jmbg} ne postoji u bazi!"
+        return odgovor.encode()
+    else:
+        odgovor = pickle.dumps(fizickaLica[jmbg])
+        return odgovor
+    
+def procitaj_sve():
+    
+
 
 
     
