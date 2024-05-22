@@ -27,4 +27,9 @@ def iscitaj_lice(odgovor):
     except:
         print(odgovor.decode())
         
-def iscitaj_sva_lica(odgovor)
+def iscitaj_sva_lica(odgovor):
+    try:
+        lista = pickle.loads(odgovor)
+        print(lista)
+    except:
+        print(odgovor.decode())
