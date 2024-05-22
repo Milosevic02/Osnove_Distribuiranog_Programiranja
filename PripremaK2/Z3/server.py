@@ -80,6 +80,12 @@ def ocitaj_korisnike():
         dodaj_korisnika(ime,sifra,prava)
     f.close()
     
+def autentifikacija(korisnicko_ime,lozinka):
+    if(korisnicko_ime in korisnici) and (hesiranje(lozinka) == korisnici[korisnicko_ime].lozinka):
+        korisnici[korisnicko_ime].autentifikovan = True
+        return True
+    return False
+    
 def main():
     ocitaj_korisnike()
     global fizickaLica
