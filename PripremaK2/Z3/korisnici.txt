@@ -1,0 +1,3 @@
+pera;pera1;ADD,EDIT,READ,READALL,REPLICATE
+mare;mare1;ADD,EDIT,READALL
+miki;miki1;ADD,READ
