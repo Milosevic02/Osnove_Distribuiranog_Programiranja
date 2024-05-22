@@ -126,22 +126,25 @@ def main():
         except Exception as ex:
             print(ex)
         if not opcija : break
-        if 
-        if opcija == "ADD": # Dodaj lice
-            odgovor = dodaj_lice(kanal.recv(1024))
-        elif opcija == "UPDATE": # Izmeni lice
-            odgovor = izmeni_lice(kanal.recv(1024))
-        elif opcija == "DELETE": # Obrisi lice
-            odgovor = izbrisi_lice(kanal.recv(1024).decode())
-        elif opcija == "READ": # Procitaj lice
-            odgovor = procitaj_lice(kanal.recv(1024).decode())            
-        elif opcija == "READ_ALL": # Pročitaj sva lica sortirana po prezimenu
-            kanal.send(procitaj_sve())
-            odgovor = ("Uspesno procitani svi podaci!").encode()             
-        try:
-            kanal.send(odgovor)
-        except Exception as ex:
-            print(ex)
+        if autorizacija_korisnika(opcija):
+            kanal.send(("True").encode())
+            if opcija == "ADD": # Dodaj lice
+                odgovor = dodaj_lice(kanal.recv(1024))
+            elif opcija == "UPDATE": # Izmeni lice
+                odgovor = izmeni_lice(kanal.recv(1024))
+            elif opcija == "DELETE": # Obrisi lice
+                odgovor = izbrisi_lice(kanal.recv(1024).decode())
+            elif opcija == "READ": # Procitaj lice
+                odgovor = procitaj_lice(kanal.recv(1024).decode())            
+            elif opcija == "READ_ALL": # Pročitaj sva lica sortirana po prezimenu
+                kanal.send(procitaj_sve())
+                odgovor = ("Uspesno procitani svi podaci!").encode()             
+            try:
+                kanal.send(odgovor)
+            except Exception as ex:
+                print(ex)
+        else:
+            kanal.send(("False").encode())
     
     print("Server se gasi.")
     server.close()
