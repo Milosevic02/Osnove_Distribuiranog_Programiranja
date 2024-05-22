@@ -16,3 +16,6 @@ def pokupi_informacije_lica_za_slanje():
     prezime = input("Prezime lica -> ")
     lice = FizickoLice(jmbg, ime,prezime)
     return pickle.dumps(lice)
+
+def pokupi_informaciju_jmbg_lica_za_slanje():
+    return input("JMBG lica -> ").encode()
