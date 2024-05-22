@@ -22,4 +22,15 @@ def izmeni_lice(poruka):
         
     return odgovor.encode()
 
+def izbrisi_lice(jmbg):
+    if jmbg not in fizickaLica:
+        odgovor = f"Lice sa jmbg-om: {jmbg} ne postoji u bazi!"
+    else:
+        del fizickaLica[jmbg]
+        odgovor = f"Lice sa jmbg-om: {jmbg} uspesno obrisano iz baze!"
+        
+    return odgovor.encode()
+
+
+
     
