@@ -85,6 +85,18 @@ def autentifikacija(korisnicko_ime,lozinka):
         korisnici[korisnicko_ime].autentifikovan = True
         return True
     return False
+
+def autentifikuj_korisnika(kanal):
+    global trenutni_korisnik
+    korisnicko_ime = kanal.recv(1024).decode()
+    lozinka = kanal.recv(1024).decode()
+    if autentifikacija(korisnicko_ime,lozinka):
+        kanal.send(("Uspesna autentifikacija!").encode())
+        trenutni_korisnik = korisnici[korisnicko_ime]
+        return True
+    else:
+        kanal.send(("Neuspesna autentifikacija!").encode())
+        return False
     
 def main():
     ocitaj_korisnike()
@@ -97,6 +109,9 @@ def main():
     
     kanal,adresa = server.accept()
     print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
+
+    while not autentifikuj_korisnika(kanal):
+        autentifikuj_korisnika(kanal)
 
     while True: 
         try:
