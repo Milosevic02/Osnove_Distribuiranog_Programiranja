@@ -19,3 +19,12 @@ def pokupi_informacije_lica_za_slanje():
 
 def pokupi_informaciju_jmbg_lica_za_slanje():
     return input("JMBG lica -> ").encode()
+
+def iscitaj_lice(odgovor):
+    try:
+        lice = pickle.loads(odgovor)
+        print(lice)
+    except:
+        print(odgovor.decode())
+        
+def iscitaj_sva_lica(odgovor)
