@@ -40,7 +40,7 @@ def izbrisi_lice(jmbg):
     log_info(odgovor)   
     return odgovor.encode()
 
-def proictaj_lice(jmbg):
+def procitaj_lice(jmbg):
     if jmbg not in fizickaLica:
         odgovor = f"Lice sa jmbg-om: {jmbg} ne postoji u bazi!"
         log_info(odgovor)
@@ -78,9 +78,45 @@ def ocitaj_korisnike():
         sifra = k[1]
         prava = list(k[2].split(","))
         dodaj_korisnika(ime,sifra,prava)
+    f.close()
     
 def main():
+    ocitaj_korisnike()
     global fizickaLica
+    
+    server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    server.bind(('localhost',6000))
+    server.listen()
+    print("Server je pokrenut")
+    
+    kanal,adresa = server.accept()
+    print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
+
+    while True: 
+        try:
+            
+            opcija = kanal.recv(1024).decode()
+        except Exception as ex:
+            print(ex)
+        if not opcija : break
+        if opcija == "ADD": # Dodaj lice
+            odgovor = dodaj_lice(kanal.recv(1024))
+        elif opcija == "UPDATE": # Izmeni lice
+            odgovor = izmeni_lice(kanal.recv(1024))
+        elif opcija == "DELETE": # Obrisi lice
+            odgovor = izbrisi_lice(kanal.recv(1024).decode())
+        elif opcija == "READ": # Procitaj lice
+            odgovor = procitaj_lice(kanal.recv(1024).decode())            
+        elif opcija == "READ_ALL": # Pročitaj sva lica sortirana po prezimenu
+            kanal.send(procitaj_sve())
+            odgovor = ("Uspesno procitani svi podaci!").encode()             
+        try:
+            kanal.send(odgovor)
+        except Exception as ex:
+            print(ex)
+    
+    print("Server se gasi.")
+    server.close()
 
 
 
