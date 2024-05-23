@@ -117,7 +117,7 @@ def main():
     print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
 
     while not autentifikuj_korisnika(kanal):
-        autentifikuj_korisnika(kanal)
+        pass
 
     while True: 
         try:
