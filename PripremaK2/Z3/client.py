@@ -43,7 +43,11 @@ def main():
     print("Veza sa primarnim serverom je uspostavljena")
     
     while not login(klijentP):
-        login(klijentP)
+        pass
+    
+    klijentS = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    klijentS.connect(('localhost',7000))
+    print("Veza sa sekundarnim serverom je uspostavljena.")
         
     while True: 
         operacija = input("Odaberite operaciju: \n1.Dodaj lice \n2.Izmeni lice \n3.Obrisi lice\n4.Procitaj lice\n5.Procitaj Sortiranu Listu Lica\n6.Repliciraj podatke\n") 
@@ -82,12 +86,23 @@ def main():
                 klijentP.send(pokupi_informaciju_jmbg_lica_za_slanje())
                 iscitaj_lice(klijentP.recv(1024))
         elif operacija == "5":
-            klijentP.send(("READ_ALL").encode())
+            klijentP.send(("READ_SORT").encode())
             odgovor = klijentP.recv(1024).decode()
             if odgovor == "False":
                 print("Nemate prava za ovu opciju izaberite neku drugu")
             else: 
                 iscitaj_sva_lica(klijentP.recv(1024))
+        elif operacija == "5":
+            try:
+                klijentP.send(("READ_ALL").encode())
+                klijentS.send(("WRITE_ALL").encode())
+                klijentS.send(klijentP.recv(1024))
+                
+                print(klijentP.recv(1024).decode())
+                print(klijentS.recv(1024).decode())
+            except Exception as ex:
+                print(ex)
+                
         else:
             print("Molimo unesite validnu operaciju.")
             continue
