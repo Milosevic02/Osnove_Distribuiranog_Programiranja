@@ -6,7 +6,7 @@ fizickaLica = {}
 korisnici = {}
 
 def log_info(poruka):
-    log = open("log.txt","a")
+    log = open("Z3/log.txt","a")
     log.write(poruka + "\n")
     log.close()
 
