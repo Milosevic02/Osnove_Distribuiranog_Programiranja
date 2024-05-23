@@ -69,7 +69,7 @@ def pisi_u_fajl(naziv_datoteke, rezim_otvaranja, podaci = lekovi):
 
 def procitaj_iz_fajla(naziv_datoteke, rezim_otvaranja):
     f = open(naziv_datoteke, rezim_otvaranja)
-    data = pickle.loads(f)
+    data = f.read()
     f.close()
     return data
 
