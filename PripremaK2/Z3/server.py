@@ -136,8 +136,17 @@ def main():
                 odgovor = izbrisi_lice(kanal.recv(1024).decode())
             elif opcija == "READ": # Procitaj lice
                 odgovor = procitaj_lice(kanal.recv(1024).decode())            
-            elif opcija == "READ_ALL": # Pročitaj sva lica sortirana po prezimenu
-                odgovor = kanal.send(procitaj_sve())            
+            elif opcija == "READ_SORT": # Pročitaj sva lica sortirana po prezimenu
+                odgovor = kanal.send(procitaj_sve())
+            elif opcija == "READ_ALL":
+                kanal.send(pickle.dumps(fizickaLica))
+                odgovor = ("Uspesno procitani svi podaci!").encode() 
+            elif opcija == "WRITE_ALL":
+                lica = pickle.loads(kanal.recv(1024))
+                odgovor = ("Uspesno upisani svi podaci!").encode()
+            
+                print("Replicirano:")
+                for l in lica.values(): print(l)       
             try:
                 kanal.send(odgovor)
             except Exception as ex:
