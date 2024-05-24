@@ -2,7 +2,7 @@ import socket,pickle
 from korisnik import Korisnik
 import hashlib
 fizickaLica = {}
-
+stanje = ""
 korisnici = {}
 
 def log_info(poruka):
@@ -107,6 +107,7 @@ def autorizacija_korisnika(opcija):
 def main():
     ocitaj_korisnike()
     global fizickaLica
+    global stanje
     
     server = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     server.bind(('localhost',6000))
@@ -114,10 +115,18 @@ def main():
     print("Server je pokrenut")
     
     kanal,adresa = server.accept()
+    print(f"Prihvacena je konekcija monitora sa adrese: {adresa}")
+    
+    stanje = kanal.recv(1024)
+    print(f"Novo stanje: {stanje}")
+    kanal.send(("Stanje uspesno azurirano!".encode()))
+    kanal.close()
+    
+    kanal, adresa = server.accept()
     print(f"Prihvacena je konekcija klijenta sa adrese: {adresa}")
-
+    
     while not autentifikuj_korisnika(kanal):
-        pass
+        continue
 
     while True: 
         try:
@@ -142,11 +151,11 @@ def main():
                 kanal.send(pickle.dumps(fizickaLica))
                 odgovor = ("Uspesno procitani svi podaci!").encode() 
             elif opcija == "WRITE_ALL":
-                lica = pickle.loads(kanal.recv(1024))
+                fizickaLica = pickle.loads(kanal.recv(1024))
                 odgovor = ("Uspesno upisani svi podaci!").encode()
             
                 print("Replicirano:")
-                for l in lica.values(): print(l)       
+                for l in fizickaLica.values(): print(l)       
             try:
                 kanal.send(odgovor)
             except Exception as ex:
