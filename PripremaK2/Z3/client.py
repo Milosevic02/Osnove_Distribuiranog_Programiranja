@@ -1,12 +1,8 @@
 import socket,pickle
 from fizickoLice import FizickoLice
 
-username = ""
-password = ""
 
 def login(klijent,klijent2):
-    global username
-    global password
     korisnicko_ime = input("Unesite korisnicko ime -> ")
     lozinka = input("Unesite lozinku -> ")
     klijent.send(korisnicko_ime.encode())
